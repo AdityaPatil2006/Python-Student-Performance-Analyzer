@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+import base64
 
 st.title("Student Performance")
 df = pd.read_csv('StudentsPerformance.csv')
@@ -36,7 +37,7 @@ def math_vs_reading():
     plt.ylabel('Reading Score')
     st.pyplot(plt)
 
-st.title('Student Performance Analysis')
+st.subheader('_Student Performance Analysis_')
 st.write('This web application allows you to explore and visualize the "Students Performance Dataset". You can view various plots to analyze how different factors affect student performance.')
 
 if st.checkbox('Show Raw Data'):
@@ -55,3 +56,20 @@ elif visualization == 'Scores by Gender':
 elif visualization == 'Math vs Reading Score':
     st.subheader('Math Score vs. Reading Score')
     math_vs_reading()
+
+def add_bg_img(image_path):
+    with open(image_path, 'rb') as f:
+        data = f.read()
+    base64_image = base64.b64encode(data).decode()
+    css_code = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{base64_image}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(css_code, unsafe_allow_html=True)
+add_bg_img("bgImage.jpg")
